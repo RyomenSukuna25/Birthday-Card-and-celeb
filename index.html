@@ -698,18 +698,97 @@ function openLetter(){document.getElementById('env-box').style.display='none';do
 const cC=document.getElementById('conf-canvas');
 const cX=cC.getContext('2d');
 let pieces=[];
+let confRunning=false;
+
+const COLS=['#ffd166','#ff6eb4','#06d6a0','#a78bfa','#ffffff','#ef233c','#52ff7a','#ff9f1c','#00b4d8','#f72585','#7209b7','#4cc9f0'];
+
+// Shape types: 0=rect, 1=circle, 2=star, 3=ribbon
+function spawnBurst(ox, oy, count, spread){
+  for(let i=0;i<count;i++){
+    const angle = (Math.random()*Math.PI*2);
+    const speed = Math.random()*spread + 2;
+    const shape = ~~(Math.random()*4);
+    pieces.push({
+      x: ox, y: oy,
+      w: Math.random()*12+5,
+      h: shape===3 ? Math.random()*3+1 : Math.random()*12+5,
+      col: COLS[~~(Math.random()*COLS.length)],
+      rot: Math.random()*Math.PI*2,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed - Math.random()*4,
+      vr: (Math.random()-.5)*.18,
+      vy2: 0,    // gravity accumulator
+      shape: shape,
+      a: 1,
+      decay: Math.random()*.012+.008
+    });
+  }
+}
+
 function fireworks(){
-  cC.width=innerWidth;cC.height=innerHeight;cC.style.display='block';
-  const cols=['#ffd166','#ff6eb4','#06d6a0','#a78bfa','#fff','#ef233c','#52ff7a','#ff9f1c'];
-  for(let i=0;i<160;i++){pieces.push({x:Math.random()*cC.width,y:-10-Math.random()*300,w:Math.random()*10+4,h:Math.random()*5+2,col:cols[~~(Math.random()*cols.length)],rot:Math.random()*Math.PI*2,vx:(Math.random()-.5)*5,vy:Math.random()*5+2,vr:(Math.random()-.5)*.13,a:1});}
-  drawConf();
+  cC.width=innerWidth; cC.height=innerHeight; cC.style.display='block';
+  const W=cC.width, H=cC.height;
+  // 7 launch points: corners, sides, center-top
+  spawnBurst(W*.5,  H*.15, 120, 14);   // center top — big main burst
+  spawnBurst(0,     H*.4,  70,  12);   // left side
+  spawnBurst(W,     H*.4,  70,  12);   // right side
+  spawnBurst(W*.25, H*.1,  60,  10);   // top left
+  spawnBurst(W*.75, H*.1,  60,  10);   // top right
+  spawnBurst(W*.1,  H*.7,  40,  9);    // bottom left
+  spawnBurst(W*.9,  H*.7,  40,  9);    // bottom right
+  if(!confRunning){confRunning=true; drawConf();}
 }
+
 function drawConf(){
-  cX.clearRect(0,0,cC.width,cC.height);let alive=false;
-  pieces.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(p.y>cC.height*.65)p.a-=.02;p.a=Math.max(0,p.a);if(p.a>0)alive=true;
-    cX.save();cX.globalAlpha=p.a;cX.translate(p.x,p.y);cX.rotate(p.rot);cX.fillStyle=p.col;cX.fillRect(-p.w/2,-p.h/2,p.w,p.h);cX.restore();});
-  if(alive)requestAnimationFrame(drawConf);else{pieces=[];cC.style.display='none';}
+  cX.clearRect(0,0,cC.width,cC.height);
+  let alive=false;
+  pieces.forEach(p=>{
+    p.vy2 += 0.18;           // gravity
+    p.x  += p.vx;
+    p.y  += p.vy + p.vy2;
+    p.vx *= 0.99;            // air drag
+    p.rot += p.vr;
+    if(p.y > cC.height*0.55) p.a -= p.decay;
+    p.a = Math.max(0, p.a);
+    if(p.a > 0) alive=true;
+
+    cX.save();
+    cX.globalAlpha = p.a;
+    cX.translate(p.x, p.y);
+    cX.rotate(p.rot);
+    cX.fillStyle = p.col;
+
+    if(p.shape===0){                          // rectangle
+      cX.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    } else if(p.shape===1){                   // circle
+      cX.beginPath(); cX.arc(0,0,p.w/2,0,Math.PI*2); cX.fill();
+    } else if(p.shape===2){                   // star
+      const r1=p.w/2, r2=p.w/5, pts=5;
+      cX.beginPath();
+      for(let j=0;j<pts*2;j++){
+        const r=j%2===0?r1:r2;
+        const a=j*Math.PI/pts;
+        j===0?cX.moveTo(Math.cos(a)*r,Math.sin(a)*r):cX.lineTo(Math.cos(a)*r,Math.sin(a)*r);
+      }
+      cX.closePath(); cX.fill();
+    } else {                                  // ribbon / streamer
+      cX.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      cX.fillStyle='rgba(255,255,255,0.3)';
+      cX.fillRect(-p.w/2, -p.h/2, p.w/3, p.h);
+    }
+    cX.restore();
+  });
+
+  if(alive){ requestAnimationFrame(drawConf); }
+  else { pieces=[]; cC.style.display='none'; confRunning=false; }
 }
+
+// Auto-fire on welcome screen load — 3 waves
+window.addEventListener('load', ()=>{
+  fireworks();
+  setTimeout(fireworks, 900);
+  setTimeout(fireworks, 1900);
+});
 </script>
 </body>
 </html>
