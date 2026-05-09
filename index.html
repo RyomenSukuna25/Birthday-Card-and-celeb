@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 25th, Bhai 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --space:#07080f;
+  --card:#10121e;
+  --card2:#161829;
+  --border:#252840;
+  --star:#c8d0ff;
+  --gold:#ffd166;
+  --pink:#ff6eb4;
+  --teal:#06d6a0;
+  --purple:#a78bfa;
+  --orange:#ff9f1c;
+  --red:#ef233c;
+  --green:#52ff7a;
+  --text:#eeeaff;
+  --muted:#7a7898;
+}
+html{scroll-behavior:smooth}
+body{background:var(--space);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* ── STARFIELD ── */
+#starfield{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;position:relative;z-index:1;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem 5rem;text-align:center}
+.screen.active{display:flex}
+
+/* shared */
+.sec-tag{font-size:.68rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;margin-bottom:.6rem;padding:4px 12px;border-radius:20px;display:inline-block}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,7vw,3.4rem);font-weight:700;line-height:1.15;margin-bottom:.6rem}
+.sec-title em{font-style:italic}
+.sec-sub{font-size:.92rem;color:var(--muted);max-width:440px;margin:0 auto 1.8rem;line-height:1.8}
+.pill-btn{border:none;font-family:'Nunito',sans-serif;font-weight:900;font-size:.95rem;padding:14px 40px;border-radius:50px;cursor:pointer;transition:transform .15s,box-shadow .15s;letter-spacing:.03em}
+.pill-btn:hover{transform:scale(1.05)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ── SCREEN 0: INTRO ── */
+#s0{background:radial-gradient(ellipse at 50% 30%,#0d1035 0%,var(--space) 70%)}
+.ufo{font-size:4.5rem;animation:float 3s ease-in-out infinite;margin-bottom:1rem;filter:drop-shadow(0 0 20px rgba(167,139,250,.6))}
+.intro-from{font-size:.8rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--purple);margin-bottom:.5rem}
+.intro-name{font-family:'Playfair Display',serif;font-size:clamp(3rem,12vw,7rem);font-weight:700;line-height:1;color:#fff}
+.intro-name b{color:var(--gold);font-style:italic}
+.intro-age{font-size:1rem;color:var(--muted);margin:.8rem 0 .3rem;font-weight:600}
+.intro-heart{font-size:1.5rem;animation:bounce .8s ease-in-out infinite alternate}
+.intro-tagline{font-size:.95rem;color:var(--star);opacity:.7;margin:1rem auto 2rem;max-width:360px;line-height:1.8;font-style:italic}
+.preview-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:400px;margin-bottom:2rem}
+.pchip{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:20px;padding:5px 13px;font-size:.75rem;color:var(--purple);font-weight:700}
+
+/* ── SCREEN 1: CAKE ── */
+#s1{}
+.cake-container{position:relative;width:240px;height:240px;margin:0 auto;cursor:pointer;user-select:none}
+.cake-emoji{font-size:130px;animation:bounce .5s ease-in-out infinite alternate;display:block;line-height:1}
+.candles-row{display:flex;gap:12px;justify-content:center;margin-bottom:.3rem}
+.candle{font-size:2rem;transition:filter .3s,opacity .3s;cursor:pointer}
+.candle.out{filter:grayscale(1);opacity:.3}
+.tap-hint{font-size:.82rem;color:var(--gold);animation:pulse 1.5s ease-in-out infinite;margin-top:.8rem}
+.wish-pop{display:none;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) forwards;margin-top:1.5rem}
+.wish-pop.show{display:block}
+.wish-big{font-size:1.5rem;font-weight:900;color:var(--gold)}
+.wish-small{font-size:.88rem;color:var(--muted);margin-top:.3rem}
+
+/* ── SCREEN 2: MEMORY TIMELINE ── */
+#s2{justify-content:flex-start;padding-top:3rem;padding-bottom:4rem;max-width:600px;margin:0 auto;width:100%}
+.mem-timeline{width:100%;text-align:left;margin-top:1rem}
+.mem-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.4rem 1.5rem;margin-bottom:1rem;position:relative;opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;cursor:default}
+.mem-card.vis{opacity:1;transform:translateY(0)}
+.mem-card:hover{border-color:var(--purple);transform:translateY(-2px);transition:border-color .2s,transform .2s}
+.mem-era{font-size:.65rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.35rem;opacity:.8}
+.mem-title{font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:.3rem}
+.mem-desc{font-size:.85rem;line-height:1.8;color:var(--muted)}
+.mem-emoji{font-size:1.8rem;position:absolute;top:1.2rem;right:1.3rem}
+
+/* ── SCREEN 3: ALIEN QUIZ ── */
+#s3{max-width:580px;margin:0 auto;width:100%}
+.alien-img{font-size:5rem;animation:float 2.5s ease-in-out infinite;margin-bottom:.5rem}
+.qcard{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:1.8rem;text-align:left;width:100%}
+.qcard-q{font-size:1rem;font-weight:800;color:#fff;margin-bottom:1.2rem;line-height:1.6}
+.qopts{display:grid;gap:9px}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:border-color .2s,background .2s}
+.qopt:hover{border-color:var(--purple);background:#1e1b35}
+.qopt.correct{border-color:var(--teal);background:rgba(6,214,160,.1);color:var(--teal)}
+.qopt.wrong{border-color:var(--red);background:rgba(239,35,60,.08);color:var(--red)}
+.qfb{font-size:.83rem;font-weight:700;margin-top:.9rem;min-height:18px;line-height:1.5}
+.qnext{margin-top:1rem;background:var(--purple);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;padding:11px 26px;border-radius:30px;cursor:pointer;display:none}
+.qnext:hover{opacity:.85}
+.qprog{display:flex;gap:6px;justify-content:center;margin-bottom:1.2rem}
+.qpdot{width:9px;height:9px;border-radius:50%;background:var(--border);transition:background .3s}
+.qpdot.done{background:var(--teal)}.qpdot.cur{background:var(--gold)}
+.score-reveal{display:none;flex-direction:column;align-items:center;gap:.8rem;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:2.5rem}
+.score-reveal.show{display:flex}
+.score-big{font-size:4.5rem;font-weight:900;color:var(--gold);line-height:1}
+.score-label{font-size:1rem;font-weight:700;color:var(--text)}
+
+/* ── SCREEN 4: FIDGET SPINNER ── */
+#s4{}
+.spinner-container{position:relative;width:220px;height:220px;margin:1.5rem auto;display:flex;align-items:center;justify-content:center}
+.spinner{font-size:7rem;display:block;cursor:pointer;user-select:none;transform-origin:center}
+.spinner.spinning{animation:spin var(--spd,0.5s) linear infinite}
+.spin-speed{font-size:.82rem;color:var(--gold);margin-top:.5rem;font-weight:700}
+.spin-tap{font-size:.78rem;color:var(--muted);animation:pulse 1.5s ease-in-out infinite;margin-top:.3rem}
+.spin-bar-wrap{width:260px;max-width:90vw;height:8px;background:var(--border);border-radius:4px;margin:.8rem auto;overflow:hidden}
+.spin-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:4px;transition:width .3s}
+.spin-done{display:none;animation:popIn .5s ease forwards;margin-top:1rem}
+.spin-done.show{display:block}
+.spinner-fact{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1.4rem;font-size:.85rem;color:var(--muted);line-height:1.7;max-width:400px;margin:1rem auto;font-style:italic}
+.spinner-fact b{color:var(--gold);font-style:normal}
+
+/* ── SCREEN 5: FIGHT METER ── */
+#s5{}
+.fight-emoji-row{font-size:3.5rem;margin:1rem 0;animation:shake 1s ease-in-out infinite}
+.fight-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:480px;width:100%;margin:.5rem auto 1.5rem}
+.fight-opt{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:1rem .8rem;font-size:.82rem;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;line-height:1.5;text-align:center}
+.fight-opt:hover{border-color:var(--pink);background:rgba(255,110,180,.08);transform:scale(1.03)}
+.fight-opt.selected{border-color:var(--gold);background:rgba(255,209,102,.08);color:var(--gold)}
+.fight-result{display:none;animation:popIn .5s ease forwards;max-width:440px;margin:0 auto}
+.fight-result.show{display:block}
+.fight-res-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem;font-size:.9rem;color:var(--muted);line-height:1.8;text-align:left}
+.fight-res-card b{color:var(--text)}
+
+/* ── SCREEN 6: SCRATCH ── */
+#s6{}
+.scratch-wrap{position:relative;width:330px;max-width:93vw;height:190px;border-radius:18px;overflow:hidden;margin:1.2rem auto;cursor:crosshair;box-shadow:0 0 30px rgba(255,209,102,.15)}
+#scratch-canvas{position:absolute;inset:0;z-index:2;border-radius:18px}
+.scratch-under{position:absolute;inset:0;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;z-index:1;border-radius:18px;border:1px solid var(--border)}
+.scratch-txt{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--gold);line-height:1.8;text-align:center}
+.scratch-pct{font-size:.7rem;color:var(--muted);margin-top:.5rem}
+.scratch-revealed{display:none;margin-top:1rem;animation:popIn .4s ease forwards}
+.scratch-revealed.show{display:block}
+
+/* ── SCREEN 7: LETTER ── */
+#s7{max-width:560px;margin:0 auto;width:100%;padding-top:3rem;padding-bottom:4rem}
+.env-box{width:280px;max-width:90vw;margin:0 auto 1rem;cursor:pointer;transition:transform .3s,filter .3s}
+.env-box:hover{transform:scale(1.04);filter:drop-shadow(0 0 20px rgba(167,139,250,.4))}
+.env-svg{width:100%;height:auto}
+.env-open-hint{font-size:.78rem;color:var(--purple);animation:pulse 1.5s ease-in-out infinite}
+.letter-box{display:none;animation:fadeUp .7s ease forwards;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;text-align:left}
+.letter-box.open{display:block}
+.ltr-hi{font-size:1rem;font-weight:900;color:var(--gold);margin-bottom:1.1rem}
+.ltr-p{font-size:.93rem;line-height:1.95;color:#c8c0e8;margin-bottom:1rem}
+.ltr-sign{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--purple);text-align:right;margin-top:.5rem}
+
+/* ── SCREEN 8: FINALE ── */
+#s8{background:radial-gradient(ellipse at 50% 20%,#10083a 0%,var(--space) 70%)}
+.finale-ufo{font-size:5rem;animation:float 3s ease-in-out infinite;margin-bottom:1rem}
+.finale-big{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,8vw,5rem);font-weight:700;line-height:1.1;color:#fff}
+.finale-big b{color:var(--gold)}
+.finale-emojis{font-size:2.5rem;margin:1rem 0;letter-spacing:.3rem}
+.finale-memory{background:var(--card);border-left:3px solid var(--gold);border-radius:0 14px 14px 0;padding:1.2rem 1.5rem;max-width:440px;font-size:.88rem;font-style:italic;color:#c0b8e0;line-height:1.9;text-align:left;margin:1.5rem auto}
+.finale-from{font-size:.72rem;color:var(--border);margin-top:3rem;letter-spacing:.15em;text-transform:uppercase}
+
+/* ── NAV ── */
+#nav{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:100;background:rgba(7,8,15,.85);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:30px;padding:8px 14px}
+.ndot{width:7px;height:7px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .3s,transform .3s}
+.ndot.on{background:var(--gold);transform:scale(1.35)}
+
+/* confetti */
+#conf-canvas{position:fixed;inset:0;pointer-events:none;z-index:200;display:none}
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<canvas id="conf-canvas"></canvas>
+
+<div id="nav"></div>
+
+<!-- ═══════════════════════════════════════
+     S0 · WELCOME
+═══════════════════════════════════════ -->
+<div id="s0" class="screen active">
+  <div class="ufo">🛸</div>
+  <p class="intro-from">From your little bro Chirag 💜</p>
+  <h1 class="intro-name">Happy<br><b>25th,</b><br>Yash Bhai!</h1>
+  <p class="intro-age">10 · 05 · 2001 — 10 · 05 · 2026</p>
+  <div class="intro-heart">🧡</div>
+  <p class="intro-tagline">"Remember when we were convinced aliens were 100% real and coming to Earth any day now?"</p>
+  <div class="preview-chips">
+    <div class="pchip">🛸 Alien Theories</div>
+    <div class="pchip">📺 Ancient Aliens</div>
+    <div class="pchip">🌀 Fidget Spinner</div>
+    <div class="pchip">🪀 Beyblades</div>
+    <div class="pchip">🐱 Sweeto</div>
+    <div class="pchip">🤜 Kid Fights</div>
+    <div class="pchip">💻 His PC</div>
+    <div class="pchip">🍜 Anime</div>
+    <div class="pchip">😂 Us</div>
+  </div>
+  <button class="pill-btn" style="background:var(--gold);color:#000;box-shadow:0 0 30px rgba(255,209,102,.3)" onclick="goTo(1)">Open the Time Machine 🚀</button>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S1 · CAKE
+═══════════════════════════════════════ -->
+<div id="s1" class="screen">
+  <div class="sec-tag" style="background:rgba(255,209,102,.15);color:var(--gold)">🎂 First things first</div>
+  <h2 class="sec-title" style="color:#fff">Blow out your <em style="color:var(--gold)">candles,</em><br>old man 😄</h2>
+  <p class="sec-sub">Tap each candle to blow it out. All three. Make that wish, bhai!</p>
+
+  <span class="cake-emoji">🎂</span>
+
+  <div class="candles-row">
+    <span class="candle" id="c1" onclick="blowCandle(1)">🕯️</span>
+    <span class="candle" id="c2" onclick="blowCandle(2)">🕯️</span>
+    <span class="candle" id="c3" onclick="blowCandle(3)">🕯️</span>
+  </div>
+
+  <p class="tap-hint" id="cake-hint">👆 Tap each candle to blow it out</p>
+
+  <div class="wish-pop" id="wish-pop">
+    <p class="wish-big">🎉 HAPPY BIRTHDAY YASH!! 🎉</p>
+    <p class="wish-small" style="margin-top:.4rem">25 years of existing and you're still my favourite person. Almost. 😂</p>
+    <button class="pill-btn" onclick="goTo(2)" style="background:var(--purple);color:#fff;margin-top:1.2rem;box-shadow:0 0 20px rgba(167,139,250,.3)">Next: Our Memories 📸</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S2 · MEMORY TIMELINE
+═══════════════════════════════════════ -->
+<div id="s2" class="screen" style="justify-content:flex-start;padding-top:3rem">
+  <div class="sec-tag" style="background:rgba(6,214,160,.12);color:var(--teal)">📸 The Archives</div>
+  <h2 class="sec-title" style="color:#fff">Things only <em style="color:var(--teal)">we</em> remember</h2>
+  <p class="sec-sub">A few chapters from the Chirag & Yash cinematic universe. 🎬</p>
+
+  <div class="mem-timeline" id="mem-timeline">
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🛸</div>
+      <div class="mem-era" style="color:var(--purple)">The Conspiracy Years</div>
+      <div class="mem-title">We were 100% sure aliens were coming</div>
+      <div class="mem-desc">Ancient Aliens on History TV 18 was basically our documentary. We had theories. Real ones. Pyramids? Aliens. Bermuda Triangle? Aliens. That weird cloud outside? Bhai, aliens. We genuinely believed we were the only two people who had figured it all out.</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">📺</div>
+      <div class="mem-era" style="color:var(--orange)">Cartoon Era</div>
+      <div class="mem-title">Saturday mornings were sacred</div>
+      <div class="mem-desc">Nothing else existed. Just cartoons, the couch, and us. Whoever woke up first got the remote and did NOT give it up. It was law. Maa calling us for breakfast was just background noise.</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">💻</div>
+      <div class="mem-era" style="color:var(--teal)">The PC Kingdom</div>
+      <div class="mem-title">His PC was a privilege, not a right</div>
+      <div class="mem-desc">You had the PC and I had to negotiate like a diplomat just to get 30 minutes. "Bhai please, just one game." And then somehow I'd still be playing an hour later while you stood there like a disappointed parent. Those games though? Worth every fight.</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🩸</div>
+      <div class="mem-era" style="color:var(--red)">The Incident™</div>
+      <div class="mem-title">That time I made your nose bleed</div>
+      <div class="mem-desc">Look. I'm not proud of it. But also, in my defence, I don't fully remember what started it. What I DO remember is that it ended very quickly after that. You never let me forget it and honestly, fair enough. Sorry bhai. Kind of. 😬</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🌀</div>
+      <div class="mem-era" style="color:var(--pink)">2016 · Fidget Spinner Era</div>
+      <div class="mem-title">We were OBSESSED</div>
+      <div class="mem-desc">Every kid had one. We had strong opinions about which ones were better. We tried tricks. We probably spent more time comparing spinners than actually spinning them. It was peak 2016 and it was absolutely glorious.</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🪀</div>
+      <div class="mem-era" style="color:var(--orange)">The Beyblade Era</div>
+      <div class="mem-title">You had a WHOLE BAG full of them</div>
+      <div class="mem-desc">Not one. Not three. A whole bag. Like a proper collector. We'd set up battles like they were world championships. "LET IT RIP!" was basically our war cry. I'm convinced that era built our competitive spirit, our problem-solving, and at least 40% of our personalities. Bit by bit, blade by blade. 🌀⚡</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🐱</div>
+      <div class="mem-era" style="color:var(--pink)">The Sweeto Chapter</div>
+      <div class="mem-title">Our first cat. Our baby. Sweeto. 🧡</div>
+      <div class="mem-desc">We brought Sweeto home and suddenly the whole house changed. That tiny little thing had both of us completely wrapped around its paw from day one. We were proper cat parents before we even knew what that meant. Sweeto wasn't just a pet — Sweeto was family. Still is. 🐾</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🍜</div>
+      <div class="mem-era" style="color:var(--gold)">The Anime Gateway</div>
+      <div class="mem-title">You introduced me to anime and changed my life</div>
+      <div class="mem-desc">I didn't ask. You just started playing it and said "just watch one episode." One episode. That was the trap. You knew exactly what you were doing and I walked right in. I don't regret a single second of it. Thanks for that, genuinely. 🙏</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🌙</div>
+      <div class="mem-era" style="color:var(--star)">Late Night Conversations</div>
+      <div class="mem-title">We'd just... keep talking</div>
+      <div class="mem-desc">No topic, no plan. One thing led to another — aliens to school to that one thing that happened three years ago to something deep about life. Those conversations felt like they lasted five minutes. They were hours. Some things I've only ever told you. I think you're the same.</div>
+    </div>
+
+    <div class="mem-card" data-mem>
+      <div class="mem-emoji">🤜🤛</div>
+      <div class="mem-era" style="color:var(--orange)">All the Fights</div>
+      <div class="mem-title">We fought about EVERYTHING</div>
+      <div class="mem-desc">The TV remote. Who ate whose food. Who was louder. Who started it (it was always you, obviously, this is my website 😂). Every fight felt like the biggest deal in the world. And then twenty minutes later we'd be talking like nothing happened. That's just us.</div>
+    </div>
+
+  </div>
+
+  <button class="pill-btn" onclick="goTo(3)" style="background:var(--purple);color:#fff;margin-top:1rem;box-shadow:0 0 20px rgba(167,139,250,.3)">Next: Alien Theory Quiz 👽</button>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S3 · ALIEN QUIZ
+═══════════════════════════════════════ -->
+<div id="s3" class="screen" style="padding-top:3rem;padding-bottom:4rem">
+  <div class="sec-tag" style="background:rgba(167,139,250,.12);color:var(--purple)">👽 The Big Test</div>
+  <div class="alien-img">👽</div>
+  <h2 class="sec-title" style="color:#fff">How deep were our <em style="color:var(--purple)">alien theories?</em></h2>
+  <p class="sec-sub">Questions only a fellow Ancient Aliens believer from History TV 18 would know. This quiz is for both of us. 😂</p>
+
+  <div class="qprog" id="alien-prog"></div>
+  <div class="qcard" id="alien-card">
+    <p class="qcard-q" id="alien-q"></p>
+    <div class="qopts" id="alien-opts"></div>
+    <p class="qfb" id="alien-fb"></p>
+    <button class="qnext" id="alien-next" onclick="nextAlien()">Next →</button>
+  </div>
+
+  <div class="score-reveal" id="alien-score">
+    <div class="score-big" id="alien-score-num"></div>
+    <p class="score-label" id="alien-score-msg"></p>
+    <button class="pill-btn" onclick="goTo(4)" style="background:var(--gold);color:#000;margin-top:.5rem">Next: Fidget Spinner Challenge 🌀</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S4 · FIDGET SPINNER
+═══════════════════════════════════════ -->
+<div id="s4" class="screen">
+  <div class="sec-tag" style="background:rgba(255,110,180,.12);color:var(--pink)">🌀 2016 Throwback</div>
+  <h2 class="sec-title" style="color:#fff">Spin it like <em style="color:var(--pink)">2016</em> 🌀</h2>
+  <p class="sec-sub">Tap the spinner as fast as you can! Fill the bar to unlock a memory. Remember when this was all we did? 😂</p>
+
+  <div style="font-size:5rem;animation:spin var(--spd,99s) linear infinite" id="spinner-emoji">🌀</div>
+
+  <div class="spin-bar-wrap"><div class="spin-bar" id="spin-bar"></div></div>
+  <p class="spin-speed" id="spin-speed">Speed: 0 taps</p>
+  <p class="spin-tap" id="spin-hint">👆 TAP FAST!</p>
+
+  <button class="pill-btn" id="spin-tap-btn" onclick="tapSpin()" style="background:var(--pink);color:#fff;margin-top:1rem;box-shadow:0 0 20px rgba(255,110,180,.3)">TAP! 🌀</button>
+
+  <div class="spin-done" id="spin-done">
+    <div class="spinner-fact">
+      <b>2016 Fact:</b> The fidget spinner was invented in the 90s but blew up in 2016 for absolutely no reason. It was banned in most schools. We loved it anyway. Classic us — obsessed with something completely pointless but doing it with full commitment. 🌀
+    </div>
+    <button class="pill-btn" onclick="goTo(5)" style="background:var(--orange);color:#000;margin-top:1rem">Next: Sibling Fight Meter 🤜</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S5 · FIGHT METER
+═══════════════════════════════════════ -->
+<div id="s5" class="screen">
+  <div class="sec-tag" style="background:rgba(239,35,60,.12);color:var(--red)">🥊 Historic Archives</div>
+  <h2 class="sec-title" style="color:#fff">Pick your <em style="color:var(--red)">fight</em> 😂</h2>
+  <p class="sec-sub">Which of these classic Chirag vs Yash fights was the MOST iconic? You know all of these happened.</p>
+
+  <div class="fight-emoji-row">🤜😤🤛</div>
+
+  <div class="fight-options" id="fight-opts">
+    <div class="fight-opt" onclick="pickFight(0)">Fighting over who gets the TV remote 📺</div>
+    <div class="fight-opt" onclick="pickFight(1)">PC time disputes that got very loud 💻</div>
+    <div class="fight-opt" onclick="pickFight(2)">Someone ate someone's food 🍱</div>
+    <div class="fight-opt" onclick="pickFight(3)">The Nose Incident™ that shall not be forgotten 🩸</div>
+  </div>
+
+  <div class="fight-result" id="fight-result"></div>
+
+  <div id="fight-next" style="display:none;margin-top:1rem;animation:fadeIn .5s ease forwards">
+    <button class="pill-btn" onclick="goTo(6)" style="background:var(--teal);color:#000">Next: Secret Scratch Card 🎰</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S6 · SCRATCH CARD
+═══════════════════════════════════════ -->
+<div id="s6" class="screen">
+  <div class="sec-tag" style="background:rgba(255,209,102,.12);color:var(--gold)">🎰 Secret Message</div>
+  <h2 class="sec-title" style="color:#fff">Scratch to <em style="color:var(--gold)">reveal</em></h2>
+  <p class="sec-sub">Something I never properly said out loud. Scratch the gold away. 🪙</p>
+
+  <div class="scratch-wrap" id="scratch-wrap">
+    <canvas id="scratch-canvas"></canvas>
+    <div class="scratch-under">
+      <p class="scratch-txt">"Bhai, half the person I am today is because of you. The curiosity, the late nights, the random obsessions — that's all you. You never knew you were teaching me. But you were. Every single day. 🧡"</p>
+      <p style="font-size:.72rem;color:var(--gold);font-weight:800;margin-top:.6rem">— Chirag</p>
+    </div>
+  </div>
+  <p class="scratch-pct" id="scratch-pct">Scratch to reveal...</p>
+
+  <div class="scratch-revealed" id="scratch-done">
+    <p style="font-size:1.1rem;font-weight:900;color:var(--gold)">💛 I mean every word.</p>
+    <button class="pill-btn" onclick="goTo(7)" style="background:var(--purple);color:#fff;margin-top:1rem;box-shadow:0 0 20px rgba(167,139,250,.3)">Next: A Letter for You 💌</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S7 · LETTER
+═══════════════════════════════════════ -->
+<div id="s7" class="screen" style="padding-top:3rem;padding-bottom:4rem;max-width:560px;margin:0 auto;width:100%">
+  <div class="sec-tag" style="background:rgba(167,139,250,.12);color:var(--purple)">💌 From the heart</div>
+  <h2 class="sec-title" style="color:#fff">A letter from<br><em style="color:var(--purple)">your Chirag</em></h2>
+  <p class="sec-sub">Tap the envelope. This one's real. 🤍</p>
+
+  <div class="env-box" id="env-box" onclick="openLetter()">
+    <svg class="env-svg" viewBox="0 0 280 185" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="272" height="177" rx="14" fill="#10121e" stroke="#a78bfa" stroke-width="1"/>
+      <path d="M4 4 L140 100 L276 4 Z" fill="#161829" stroke="#a78bfa" stroke-width="1"/>
+      <path d="M4 4 L4 181 L110 100 Z" fill="#131524"/>
+      <path d="M276 4 L276 181 L170 100 Z" fill="#131524"/>
+      <path d="M4 181 L140 96 L276 181 Z" fill="#10121e"/>
+      <circle cx="140" cy="130" r="22" fill="#1c1830" stroke="#ffd166" stroke-width="1"/>
+      <text x="140" y="136" text-anchor="middle" font-family="'Playfair Display',serif" font-size="16" font-style="italic" fill="#ffd166">C</text>
+      <text x="140" y="56" text-anchor="middle" font-size="22">🧡</text>
+    </svg>
+    <p class="env-open-hint">tap to open 💌</p>
+  </div>
+
+  <div class="letter-box" id="letter-box">
+    <p class="ltr-hi">Dear Yash bhai,</p>
+    <p class="ltr-p">Happy 25th. I've been thinking about what to write here for a while and honestly the only thing that keeps coming back is just — thank you.</p>
+    <p class="ltr-p">Thank you for the alien theories at midnight. For Ancient Aliens on History TV 18 that we watched like it was a religion. For introducing me to anime when I had no idea what I was walking into. For those late night conversations that went nowhere and everywhere at the same time. I've never talked to anyone the way I talk to you.</p>
+    <p class="ltr-p">And the Beyblades, bhai — THE BEYBLADES. You had a whole bag, like a proper collector. Every battle felt like a world championship. "LET IT RIP!" We were so dramatic about it. I think about that bag sometimes and it just makes me smile. 🌀⚡</p>
+    <p class="ltr-p">We brought Sweeto home and suddenly the whole house changed. That tiny thing had both of us wrapped around its paw from day one. We were proper cat parents before we even knew what that meant. 🐱</p>
+    <p class="ltr-p">We fought all the time. About the remote, the PC, food, everything. I made your nose bleed once and I'm mostly sorry about it 😬. But you know what? Every single fight, we were back to normal before the day was over. Because that's just us.</p>
+    <p class="ltr-p">You were always the cooler one. The one with the PC, the anime recommendations, the fidget spinner opinions, the creative job. But you never made me feel like the "little" brother in a bad way. You brought me into your world. That meant everything.</p>
+    <p class="ltr-p">25 is a big one, bhai. And you've earned every bit of it — not just the job, the skills, the career — but who you are as a person. As my brother. As my first best friend.</p>
+    <p class="ltr-p">Here's to the next 25 years of theories, fights, and everything in between. I love you, you absolute menace. 🧡</p>
+    <p class="ltr-sign">Your Chirag 💜<br><span style="font-size:.75rem;color:var(--muted)">10 · 05 · 2026</span></p>
+    <div style="display:flex;justify-content:center;margin-top:1.5rem">
+      <button class="pill-btn" onclick="goTo(8)" style="background:var(--gold);color:#000;box-shadow:0 0 20px rgba(255,209,102,.3)">The Grand Finale 🎊</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     S8 · FINALE
+═══════════════════════════════════════ -->
+<div id="s8" class="screen">
+  <div class="finale-ufo">🛸</div>
+  <h2 class="finale-big">Happy <b>25th,</b><br>Yash Salkar! 🎂</h2>
+  <div class="finale-emojis">👽📺💻🌀🪀🐱🤜🍜🌙</div>
+  <p style="font-size:.9rem;color:var(--muted);max-width:380px;margin:.5rem auto 0;line-height:1.8">From the alien theories to the anime marathons, from every fight to every late night talk — it's all been one of the best parts of my life.</p>
+  <div class="finale-memory">
+    "Remember when we were 100% sure aliens were going to land and we had our whole theory ready? We were so confident. I still kind of believe it. Don't tell anyone."<br>
+    <span style="font-size:.72rem;color:var(--gold);font-weight:700">— Chirag, your forever conspiracy theory partner 👽</span>
+  </div>
+  <p style="font-size:1rem;font-weight:800;color:var(--gold)">Happiest birthday, bhai. I love you to the moon and back. 🚀🌕</p>
+  <p class="finale-from">crafted with love & code by Chirag · 2026</p>
+</div>
+
+<script>
+/* ══ NAV SETUP ══ */
+const TOTAL=9;
+let cur=0;
+const navEl=document.getElementById('nav');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='ndot'+(i===0?' on':'');d.onclick=()=>goTo(i);navEl.appendChild(d);}
+
+function goTo(i){
+  document.getElementById('s'+cur).classList.remove('active');
+  navEl.children[cur].classList.remove('on');
+  cur=i;
+  document.getElementById('s'+cur).classList.add('active');
+  navEl.children[cur].classList.add('on');
+  window.scrollTo(0,0);
+  if(i===2)initMemory();
+  if(i===3)initAlien();
+  if(i===4)resetSpin();
+  if(i===6)initScratch();
+  if(i===8){fireworks();setTimeout(fireworks,1200);}
+}
+
+/* ══ STARFIELD ══ */
+const sf=document.getElementById('starfield');
+const sx=sf.getContext('2d');
+function resizeSF(){sf.width=innerWidth;sf.height=innerHeight;}resizeSF();addEventListener('resize',resizeSF);
+const stars=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.4+.2,a:Math.random(),v:Math.random()*.005+.001,col:Math.random()>.7?'#a78bfa':'#c8d0ff'}));
+function animSF(){sx.clearRect(0,0,sf.width,sf.height);stars.forEach(s=>{s.a+=s.v;if(s.a>1||s.a<0.05)s.v*=-1;sx.beginPath();sx.arc(s.x,s.y,s.r,0,Math.PI*2);sx.fillStyle=s.col.replace(')',`,${s.a})`).replace('rgb','rgba').replace('#','rgba(').replace('rgba(','').replace('rgba(a78bfa','rgba(167,139,250').replace('rgba(c8d0ff','rgba(200,208,255');sx.globalAlpha=s.a;sx.fillStyle=s.col;sx.fill();sx.globalAlpha=1;});requestAnimationFrame(animSF);}
+// simpler star draw
+function animSF2(){sx.clearRect(0,0,sf.width,sf.height);stars.forEach(s=>{s.a+=s.v;if(s.a>0.9||s.a<0.05)s.v*=-1;sx.beginPath();sx.arc(s.x,s.y,s.r,0,Math.PI*2);sx.globalAlpha=Math.max(0,Math.min(1,s.a));sx.fillStyle=s.col;sx.fill();});sx.globalAlpha=1;requestAnimationFrame(animSF2);}
+animSF2();
+
+/* ══ CAKE ══ */
+let cOut=0;
+function blowCandle(n){
+  const el=document.getElementById('c'+n);
+  if(el.classList.contains('out'))return;
+  el.classList.add('out');cOut++;
+  if(cOut>=3){
+    document.getElementById('cake-hint').style.display='none';
+    document.getElementById('wish-pop').classList.add('show');
+    fireworks();
+  }
+}
+
+/* ══ MEMORY TIMELINE ══ */
+function initMemory(){
+  const cards=document.querySelectorAll('[data-mem]');
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.12});
+  cards.forEach(c=>obs.observe(c));
+}
+
+/* ══ ALIEN QUIZ ══ */
+const alienQs=[
+  {q:"According to Ancient Aliens, who built the Egyptian pyramids?",
+   opts:["Egyptians obviously","Aliens, 100%","Time travellers","Very tall people"],
+   ans:1,
+   right:"✅ ALIENS. Obviously. Giorgio Tsoukalos would be proud. 👽",
+   wrong:"❌ ALIENS. That's the whole show. Every episode. Aliens."},
+  {q:"On History TV 18's Ancient Aliens, Giorgio Tsoukalos is famous for his...",
+   opts:["Perfect hair that defied gravity","Very calm and rational theories","Refusing to say aliens","Only wearing suits"],
+   ans:0,
+   right:"✅ That HAIR. Iconic. A man who clearly had no time for haircuts because he was too busy finding aliens. 😂",
+   wrong:"❌ It was the hair! That legendary, gravity-defying, absolutely wild hair. A cultural icon."},
+  {q:"You and Chirag had a joint alien theory. Which of these sounds most like something you two would actually believe?",
+   opts:["The government knows but won't tell us","Aliens built the Bermuda Triangle","The moon is actually a spaceship","All of the above, simultaneously"],
+   ans:3,
+   right:"✅ ALL OF THE ABOVE. Obviously. Maximum conspiracy, maximum commitment. That's the Chirag-Yash method. 😂👽",
+   wrong:"❌ Come on, you know it was ALL of the above. You two never picked just one theory."},
+  {q:"What would you two do if aliens actually landed tomorrow?",
+   opts:["Panic and hide","Say 'We KNEW it!' and feel vindicated forever","Try to communicate","Call the news"],
+   ans:1,
+   right:"✅ 'WE KNEW IT.' That would be the only acceptable response after years of preparation. 😂",
+   wrong:"❌ Honestly it's 'WE KNEW IT.' All that research finally paying off."},
+  {q:"Ancient Aliens on History TV 18 taught us that...",
+   opts:["Everything can be explained by aliens","Critical thinking is important","History is boring","We should sleep more"],
+   ans:0,
+   right:"✅ EVERYTHING. Stonehenge? Aliens. Nazca Lines? Aliens. That weird shape in your toast? Aliens. 👽😂",
+   wrong:"❌ The correct answer is always 'aliens did it.' That's the entire curriculum."},
+];
+let aIdx=0,aScore=0,aAns=false;
+function initAlien(){
+  aIdx=0;aScore=0;aAns=false;
+  buildProg('alien-prog',alienQs.length);
+  showAlien(0);
+  document.getElementById('alien-card').style.display='block';
+  document.getElementById('alien-score').classList.remove('show');
+}
+function buildProg(id,n){const p=document.getElementById(id);p.innerHTML='';for(let i=0;i<n;i++){const d=document.createElement('div');d.className='qpdot'+(i===0?' cur':'');d.id=id+'d'+i;p.appendChild(d);}}
+function showAlien(i){
+  aAns=false;
+  const q=alienQs[i];
+  document.getElementById('alien-q').textContent=q.q;
+  const opts=document.getElementById('alien-opts');
+  opts.innerHTML='';
+  q.opts.forEach((o,oi)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>ansAlien(oi);opts.appendChild(b);});
+  document.getElementById('alien-fb').textContent='';
+  document.getElementById('alien-next').style.display='none';
+}
+function ansAlien(sel){
+  if(aAns)return;aAns=true;
+  const q=alienQs[aIdx];
+  const opts=document.querySelectorAll('#alien-opts .qopt');
+  if(sel===q.ans){aScore++;opts[sel].classList.add('correct');document.getElementById('alien-fb').style.color='var(--teal)';document.getElementById('alien-fb').textContent=q.right;}
+  else{opts[sel].classList.add('wrong');opts[q.ans].classList.add('correct');document.getElementById('alien-fb').style.color='var(--red)';document.getElementById('alien-fb').textContent=q.wrong;}
+  document.getElementById('alien-next').style.display='block';
+  const pd=document.getElementById('alien-prog'+'d'+aIdx);
+  if(pd){pd.classList.remove('cur');pd.classList.add('done');}
+}
+function nextAlien(){
+  aIdx++;
+  if(aIdx>=alienQs.length){showAlienScore();return;}
+  const pd=document.getElementById('alien-prog'+'d'+aIdx);if(pd)pd.classList.add('cur');
+  showAlien(aIdx);
+}
+function showAlienScore(){
+  document.getElementById('alien-card').style.display='none';
+  const sc=document.getElementById('alien-score');sc.classList.add('show');
+  document.getElementById('alien-score-num').textContent=aScore+'/'+alienQs.length;
+  const msgs=['Bhai, were you even watching the show? 😂','Okay so you remember SOME episodes 📺','Solid Ancient Aliens fan! 👽','Full marks! Giorgio Tsoukalos would be proud!! 👽🏆'];
+  document.getElementById('alien-score-msg').textContent=msgs[Math.min(Math.floor(aScore/2),3)];
+  if(aScore>=4)fireworks();
+}
+
+/* ══ SPINNER ══ */
+let spinTaps=0,spinGoal=30,spinDone=false;
+function resetSpin(){spinTaps=0;spinDone=false;document.getElementById('spin-bar').style.width='0%';document.getElementById('spin-speed').textContent='Speed: 0 taps';document.getElementById('spin-done').classList.remove('show');document.getElementById('spinner-emoji').style.animation='';}
+function tapSpin(){
+  if(spinDone)return;
+  spinTaps++;
+  const pct=Math.min(spinTaps/spinGoal*100,100);
+  document.getElementById('spin-bar').style.width=pct+'%';
+  const spd=Math.max(0.1,0.5-(spinTaps/spinGoal*.45));
+  document.getElementById('spinner-emoji').style.animation=`spin ${spd}s linear infinite`;
+  document.getElementById('spin-speed').textContent=`Speed: ${spinTaps} taps 🌀`;
+  if(spinTaps>=spinGoal&&!spinDone){
+    spinDone=true;
+    document.getElementById('spin-hint').style.display='none';
+    document.getElementById('spin-done').classList.add('show');
+    fireworks();
+  }
+}
+
+/* ══ FIGHT METER ══ */
+const fightResults=[
+  {emoji:'📺',title:'The Remote War',text:'<b>This was constant.</b> Every evening. Same time. Same argument. "I was watching this." "No you weren\'t, you left." "I was coming back!" Honestly the remote was just an excuse. We both just liked winning. 😂'},
+  {emoji:'💻',title:'The PC Tribunal',text:'<b>Those negotiations were intense.</b> "Just 10 more minutes" meant 40 minutes minimum. You had full ownership rights and I was just a desperate guest. But the games were worth every argument. 💻'},
+  {emoji:'🍱',title:'The Great Food Crime',text:'<b>There are no innocent parties in a food fight.</b> Someone always ate the last of something. Someone always said "I was saving that." Someone always lied about it. We both know who. 😂'},
+  {emoji:'🩸',title:'The Nose Incident™',text:'<b>Okay so this one is genuinely in the hall of fame.</b> I don\'t fully remember how it escalated to THAT point, but it did. I\'m sorry, Yash. But also, you definitely started it. Definitely. 😬 We never told Maa everything that happened.'},
+];
+function pickFight(i){
+  document.querySelectorAll('.fight-opt').forEach((el,ei)=>{el.classList.toggle('selected',ei===i);});
+  const r=fightResults[i];
+  const res=document.getElementById('fight-result');
+  res.innerHTML=`<div class="fight-res-card"><div style="font-size:2rem;margin-bottom:.5rem">${r.emoji}</div><div style="font-weight:900;color:#fff;margin-bottom:.5rem">${r.title}</div>${r.text}</div>`;
+  res.classList.add('show');
+  document.getElementById('fight-next').style.display='block';
+}
+
+/* ══ SCRATCH ══ */
+let scratchInit=false,scratchDone=false;
+function initScratch(){
+  if(scratchInit)return;scratchInit=true;
+  const wrap=document.getElementById('scratch-wrap');
+  const c=document.getElementById('scratch-canvas');
+  c.width=wrap.offsetWidth||330;c.height=190;
+  const cx=c.getContext('2d');
+
+  // Draw gold cover on a plain canvas (no compositing yet)
+  const g=cx.createLinearGradient(0,0,c.width,c.height);
+  g.addColorStop(0,'#b8841a');g.addColorStop(.35,'#ffd166');g.addColorStop(.65,'#ffd166');g.addColorStop(1,'#b8841a');
+  cx.fillStyle=g;cx.fillRect(0,0,c.width,c.height);
+  // sparkles pattern
+  cx.fillStyle='rgba(255,255,200,0.18)';
+  for(let i=0;i<18;i++){cx.beginPath();cx.arc(Math.random()*c.width,Math.random()*c.height,Math.random()*3+1,0,Math.PI*2);cx.fill();}
+  cx.fillStyle='rgba(0,0,0,.5)';cx.font='bold 15px Nunito,sans-serif';cx.textAlign='center';
+  cx.fillText('✨ SCRATCH HERE ✨',c.width/2,c.height/2-8);
+  cx.font='12px Nunito,sans-serif';cx.fillStyle='rgba(0,0,0,.4)';
+  cx.fillText('(use your finger or mouse)',c.width/2,c.height/2+14);
+
+  // Switch to eraser mode
+  cx.globalCompositeOperation='destination-out';
+
+  // Track coverage via a separate off-screen canvas
+  const tracker=document.createElement('canvas');
+  tracker.width=c.width;tracker.height=c.height;
+  const tx=tracker.getContext('2d');
+  tx.fillStyle='#000';tx.fillRect(0,0,tracker.width,tracker.height);
+
+  let painting=false;
+  let totalErased=0;
+  const TOTAL_PX=c.width*c.height;
+  const BRUSH=28;
+
+  const pos=(e,cv)=>{const r=cv.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(cv.width/r.width),y:(t.clientY-r.top)*(cv.height/r.height)};};
+
+  const scratchAt=(x,y)=>{
+    // Erase on visible canvas
+    cx.beginPath();cx.arc(x,y,BRUSH,0,Math.PI*2);cx.fill();
+    // Track on off-screen canvas
+    const wasBlack=tx.getImageData(~~(x-BRUSH),~~(y-BRUSH),BRUSH*2,BRUSH*2);
+    tx.globalCompositeOperation='destination-out';
+    tx.beginPath();tx.arc(x,y,BRUSH,0,Math.PI*2);tx.fill();
+    // Count newly cleared pixels by checking before/after
+    let newlyCleared=0;
+    const after=tx.getImageData(~~Math.max(0,x-BRUSH),~~Math.max(0,y-BRUSH),BRUSH*2,BRUSH*2);
+    for(let i=3;i<wasBlack.data.length;i+=4){if(wasBlack.data[i]>0&&after.data[i]===0)newlyCleared++;}
+    totalErased=Math.min(totalErased+newlyCleared,TOTAL_PX);
+    const pct=Math.round(totalErased/TOTAL_PX*100);
+    document.getElementById('scratch-pct').textContent=pct+'% revealed';
+    if(pct>45&&!scratchDone){
+      scratchDone=true;
+      c.style.transition='opacity .9s ease';c.style.opacity='0';
+      setTimeout(()=>{c.style.display='none';},900);
+      document.getElementById('scratch-done').classList.add('show');
+    }
+  };
+
+  const draw=e=>{if(!painting)return;e.preventDefault();const{x,y}=pos(e,c);scratchAt(x,y);};
+  c.addEventListener('mousedown',e=>{painting=true;const{x,y}=pos(e,c);scratchAt(x,y);});
+  c.addEventListener('mousemove',draw);
+  c.addEventListener('mouseup',()=>painting=false);
+  c.addEventListener('mouseleave',()=>painting=false);
+  c.addEventListener('touchstart',e=>{painting=true;const{x,y}=pos(e,c);scratchAt(x,y);},{passive:false});
+  c.addEventListener('touchmove',draw,{passive:false});
+  c.addEventListener('touchend',()=>painting=false);
+}
+
+/* ══ LETTER ══ */
+function openLetter(){document.getElementById('env-box').style.display='none';document.getElementById('letter-box').classList.add('open');}
+
+/* ══ CONFETTI / FIREWORKS ══ */
+const cC=document.getElementById('conf-canvas');
+const cX=cC.getContext('2d');
+let pieces=[];
+function fireworks(){
+  cC.width=innerWidth;cC.height=innerHeight;cC.style.display='block';
+  const cols=['#ffd166','#ff6eb4','#06d6a0','#a78bfa','#fff','#ef233c','#52ff7a','#ff9f1c'];
+  for(let i=0;i<160;i++){pieces.push({x:Math.random()*cC.width,y:-10-Math.random()*300,w:Math.random()*10+4,h:Math.random()*5+2,col:cols[~~(Math.random()*cols.length)],rot:Math.random()*Math.PI*2,vx:(Math.random()-.5)*5,vy:Math.random()*5+2,vr:(Math.random()-.5)*.13,a:1});}
+  drawConf();
+}
+function drawConf(){
+  cX.clearRect(0,0,cC.width,cC.height);let alive=false;
+  pieces.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(p.y>cC.height*.65)p.a-=.02;p.a=Math.max(0,p.a);if(p.a>0)alive=true;
+    cX.save();cX.globalAlpha=p.a;cX.translate(p.x,p.y);cX.rotate(p.rot);cX.fillStyle=p.col;cX.fillRect(-p.w/2,-p.h/2,p.w,p.h);cX.restore();});
+  if(alive)requestAnimationFrame(drawConf);else{pieces=[];cC.style.display='none';}
+}
+</script>
+</body>
+</html>
